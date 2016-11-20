@@ -33,6 +33,7 @@ public class ServerThread extends Thread{
                         if (line.indexOf("/login ") == 0) {
                             String command[] = line.split(" ");
                             if(command.length == 3 && Account.login(command[1], command[2])) {
+                                log("Client " + getName() + " now logined as " + command[1]);
                                 this.setName(command[1]);
                                 logined = true;
                                 Message.register(this);
@@ -46,7 +47,7 @@ public class ServerThread extends Thread{
                     }
                 }
 
-                send("bye, Client(" + getName() + ")!");
+                send("bye, Client!");
                 log("Client(" + getName() + ") exit!");
                 printWriter.close();
                 bufferedReader.close();

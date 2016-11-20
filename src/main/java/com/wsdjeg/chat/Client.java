@@ -19,6 +19,9 @@ public class Client {
         while (true) {
             String msg = in.readLine();
             out.println(msg);
+            if ("bye".equals(msg)) {
+                break;
+            }
         }
     }
     public static void main (String[] args) {
@@ -37,10 +40,12 @@ public class Client {
             try {
                 while(true){
                     String result = buff.readLine();
-                    if("byeClient".equals(result)){
+                    if("bye, Client!".equals(result)){
                         break;
                     }else{
-                        System.out.println(result);
+                        if (result != null) {
+                            System.out.println(result);
+                        }
                     }
                 }
                 in.close();
