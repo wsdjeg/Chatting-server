@@ -42,7 +42,9 @@ public class ServerThread extends Thread{
                             }
                         }
                     }else if(logined){
-                        Message.push("< " + getName() + " > " + line);
+                        for (ServerThread s : Message.getServerThreads()) {
+                            s.send("< " + getName() + " > " + line);
+                        }
                     }else{
                         send("please login!");
                     }

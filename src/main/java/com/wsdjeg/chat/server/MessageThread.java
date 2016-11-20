@@ -14,14 +14,16 @@ public class MessageThread extends Thread{
     public void run() {
         while (true) {
             if(!Message.pull().isEmpty()){
-                for (ServerThread s : Message.getServerThreads()) {
-                    try {
-                        s.send(Message.pull());
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                if (Message.getServerThreads().size() > 0) {
+                    for (ServerThread s : Message.getServerThreads()) {
+                        try {
+                            s.send(Message.pull());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
+                    Message.remove();
                 }
-                Message.remove();
             }
         }
     }

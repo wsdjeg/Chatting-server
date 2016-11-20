@@ -31,9 +31,6 @@ public class Server extends ServerSocket {
             while (true) {
                 Socket socket = accept();
                 new ServerThread(socket);
-                if (!MessageThread.isRunning) {
-                    new MessageThread();
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -45,9 +42,6 @@ public class Server extends ServerSocket {
             while (true) {
                 Socket socket = accept();
                 new ServerThread(socket);
-                if (!MessageThread.isRunning) {
-                    new MessageThread();
-                }
             }
         } catch (Exception e) {
             e.printStackTrace();
