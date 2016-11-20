@@ -23,7 +23,7 @@ public class ServerThread extends Thread{
                 String line = "";
 
                 while (true) {
-                    
+                    System.out.println("==========");
                     line = bufferedReader.readLine();
                     if (line == null) {
                         continue;
