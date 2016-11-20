@@ -8,8 +8,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.wsdjeg.chat.server.Account;
-import com.wsdjeg.chat.server.Message;
-import com.wsdjeg.chat.server.MessageThread;
 import com.wsdjeg.chat.server.ServerThread;
 
 public class Server extends ServerSocket {
@@ -17,7 +15,7 @@ public class Server extends ServerSocket {
 
     public static void main (String[] args) throws IOException{
         int port = 0;
-        if (port > 1023 && args.length > 0) {
+        if (port > 1023 && args.length == 1) {
             port = Integer.valueOf(args[0]);
             new Server(port);
         }else{

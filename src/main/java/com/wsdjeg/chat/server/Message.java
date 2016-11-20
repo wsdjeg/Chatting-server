@@ -1,46 +1,21 @@
 package com.wsdjeg.chat.server;
 import java.net.Socket;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 public class Message {
-    private Message(){
+    //private Message(){
+    //}
+    public static String format(String name, String msg){
+        String str = "[" + getTime() +  "] < " + name + " > " + msg; 
+        return str;
     }
-    private static List<String> messages = new ArrayList<>();
-    private static List<Socket> sockets = new ArrayList<>();
-    private static List<ServerThread> serverThreads = new ArrayList<>();
-    public static void register(ServerThread s){
-        if (!serverThreads.contains(s)) {
-            serverThreads.add(s);
-        }
-    }
-    public static void loginOut(ServerThread s){
-        if (serverThreads.contains(s)){
-            serverThreads.remove(s);
-        }
-    }
-    public static void register(Socket s){
-        if (!sockets.contains(s)){
-            sockets.add(s);
-        }
-    }
-    public static List<ServerThread> getServerThreads(){
-        return serverThreads;
-    }
-    public static List<Socket> getSockets(){
-        return sockets;
-    }
-    public static void push(String msg){
-        messages.add(msg);
-    }
-    public static String pull(){
-        if (messages.size() > 0){
-            return messages.get(0);
-        }
-        return "";
-    }
-    public static void remove(){
-        if (messages.size() > 0) {
-            messages.remove(0);
-        }
+    public static String getTime(){
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return df.format(ts);
     }
 }

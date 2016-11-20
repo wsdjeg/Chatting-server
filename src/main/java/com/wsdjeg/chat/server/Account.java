@@ -1,6 +1,8 @@
 package com.wsdjeg.chat.server;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Account {
@@ -19,6 +21,35 @@ public class Account {
             return true;
         }
         return false;
+    }
+    private static List<ServerThread> serverThreads = new ArrayList<>();
+    public static void register(ServerThread s){
+        if (!serverThreads.contains(s)) {
+            serverThreads.add(s);
+        }
+    }
+    public static void loginOut(ServerThread s){
+        if (serverThreads.contains(s)){
+            serverThreads.remove(s);
+        }
+    }
+    public static List<ServerThread> getServerThreads(){
+        return serverThreads;
+    }
+
+    public static boolean signin(String name, String pw, String pwcf){
+        if (!pw.equals(pwcf)) {
+            return false;
+        }
+        if (accts.values().contains(name)){
+            if (Account.login(name, pw)){
+                return true;
+            }
+            return false;
+        }
+
+        accts.put(name, pw);
+        return true;
     }
 
 }

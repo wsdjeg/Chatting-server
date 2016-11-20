@@ -23,6 +23,7 @@ public class ServerThread extends Thread{
                 String line = "";
 
                 while (true) {
+                    
                     line = bufferedReader.readLine();
                     if (line == null) {
                         continue;
@@ -36,14 +37,26 @@ public class ServerThread extends Thread{
                                 log("Client " + getName() + " now logined as " + command[1]);
                                 this.setName(command[1]);
                                 logined = true;
-                                Message.register(this);
+                                Account.register(this);
                                 send("you are logined as " + command[1]);
-                                System.out.println(Message.getServerThreads().size());
+                            }else{
+                                send("login failed!");
+                            }
+                        }else if (line.indexOf("/signin ") == 0 ){
+                            String command[] = line.split(" ");
+                            if (command.length == 4 && Account.signin(command[1], command[2], command[3])) {
+                                this.setName(command[1]);
+                                logined = true;
+                                Account.register(this);
+                                send("signin successfully!");
+                                log("Client " + getName() + " now logined as " + command[1]);
+                            }else{
+                                send("signin failed!");
                             }
                         }
                     }else if(logined){
-                        for (ServerThread s : Message.getServerThreads()) {
-                            s.send("< " + getName() + " > " + line);
+                        for (ServerThread s : Account.getServerThreads()) {
+                            s.send(Message.format(getName(), line));
                         }
                     }else{
                         send("please login!");
@@ -54,7 +67,7 @@ public class ServerThread extends Thread{
                 log("Client(" + getName() + ") exit!");
             } catch (IOException e) {
             }finally{
-                Message.loginOut(this);
+                Account.loginOut(this);
                 printWriter.close();
                 try {
                     bufferedReader.close();
