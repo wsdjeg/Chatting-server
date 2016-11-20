@@ -6,12 +6,12 @@ import java.net.Socket;
 
 public class MessageThread extends Thread{
         public MessageThread(Socket s) throws IOException{
-
+            start();
         }
         @Override
         public void run() {
             while (true) {
-                if(!Message.pull().equals(null)){
+                if(!Message.pull().isEmpty()){
                     for (ServerThread s : Message.getServerThreads()) {
                         try {
                             s.send(Message.pull());

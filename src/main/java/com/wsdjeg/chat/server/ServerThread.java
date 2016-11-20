@@ -24,6 +24,9 @@ public class ServerThread extends Thread{
 
                 while (true) {
                     line = bufferedReader.readLine();
+                    if (line == null) {
+                        continue;
+                    }
                     if (line.equals("bye")){
                         break;
                     }else if(line.indexOf("/") == 0){
