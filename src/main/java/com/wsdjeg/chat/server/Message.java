@@ -13,6 +13,11 @@ public class Message {
             serverThreads.add(s);
         }
     }
+    public static void loginOut(ServerThread s){
+        if (serverThreads.contains(s)){
+            serverThreads.remove(s);
+        }
+    }
     public static void register(Socket s){
         if (!sockets.contains(s)){
             sockets.add(s);

@@ -8,6 +8,7 @@ public class Account {
     private static Map<String, String> accts = new HashMap<String ,String >();
     static {
         accts.put("root", "1234");
+        accts.put("wsdjeg", "1234");
     }
     private Account(){
 

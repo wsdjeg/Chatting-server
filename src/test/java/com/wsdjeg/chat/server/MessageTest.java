@@ -10,9 +10,7 @@ public class MessageTest {
     }
     /* test pull */
     public void testPull() {
-        Message.push("message 1");
-        Message.push("message 2");
-        System.out.println(Message.pull());
+        System.out.println(Message.pull().isEmpty());
     }
     /* test getSockets */
     public void testGetSockets() {

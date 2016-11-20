@@ -38,6 +38,7 @@ public class ServerThread extends Thread{
                                 logined = true;
                                 Message.register(this);
                                 send("you are logined as " + command[1]);
+                                System.out.println(Message.getServerThreads().size());
                             }
                         }
                     }else if(logined){
@@ -49,10 +50,15 @@ public class ServerThread extends Thread{
 
                 send("bye, Client!");
                 log("Client(" + getName() + ") exit!");
-                printWriter.close();
-                bufferedReader.close();
-                client.close();
             } catch (IOException e) {
+            }finally{
+                Message.loginOut(this);
+                printWriter.close();
+                try {
+                    bufferedReader.close();
+                    client.close();
+                } catch (IOException e) {
+                }
             }
         }
         public void log(String log){
