@@ -6,8 +6,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client {
-    private static final String SERVER_IP = "127.0.0.1";
-    private static final int SERVER_PORT = 2013;
+    private static String SERVER_IP = "127.0.0.1";
+    private static int SERVER_PORT = 2013;
     private Socket client;
     private PrintWriter out;
     private BufferedReader in;
@@ -26,6 +26,12 @@ public class Client {
     }
     public static void main (String[] args) {
         try {
+            if (args.length == 2){
+                SERVER_IP = args[0];
+                SERVER_PORT = Integer.valueOf(args[1]);
+                System.out.println(SERVER_IP);
+                System.out.println(SERVER_PORT);
+            }
             new Client();
         } catch (Exception e) {
         }
