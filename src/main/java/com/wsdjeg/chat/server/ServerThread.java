@@ -20,14 +20,9 @@ public class ServerThread extends Thread{
         }
         public void run(){
             try {
-                String line = "";
+                String line;
 
-                while (true) {
-                    System.out.println("==========");
-                    line = bufferedReader.readLine();
-                    if (line == null) {
-                        continue;
-                    }
+                while ((line = bufferedReader.readLine()) != null) {
                     if (line.equals("bye")){
                         break;
                     }else if(line.indexOf("/") == 0){

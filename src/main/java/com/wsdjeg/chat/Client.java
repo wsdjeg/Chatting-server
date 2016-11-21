@@ -38,8 +38,8 @@ public class Client {
         }
         public void run(){
             try {
-                while(true){
-                    String result = buff.readLine();
+                String result;
+                while((result = buff.readLine()) != null){
                     if("bye, Client!".equals(result)){
                         break;
                     }else{
