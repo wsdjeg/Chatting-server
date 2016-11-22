@@ -54,7 +54,7 @@ public class ServerThread extends Thread{
                             s.send(Message.format(getName(), line));
                         }
                     }else{
-                        send("please login!");
+                        send(Message.format("please login!"));
                     }
                 }
 

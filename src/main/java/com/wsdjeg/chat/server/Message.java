@@ -10,12 +10,16 @@ public class Message {
     //private Message(){
     //}
     public static String format(String name, String msg){
-        String str = "[" + getTime() +  "] < " + name + " > " + msg; 
+        String str = "[" + getTime() +  "] < " + name + " > " + msg;
+        return str;
+    }
+    public static String format(String warn){
+        String str = "[" + getTime() + "] " + warn;
         return str;
     }
     public static String getTime(){
         Timestamp ts = new Timestamp(System.currentTimeMillis());
-        DateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        DateFormat df = new SimpleDateFormat("HH:mm");
         return df.format(ts);
     }
 }
