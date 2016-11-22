@@ -29,8 +29,6 @@ public class Client {
             if (args.length == 2){
                 SERVER_IP = args[0];
                 SERVER_PORT = Integer.valueOf(args[1]);
-                System.out.println(SERVER_IP);
-                System.out.println(SERVER_PORT);
             }
             new Client();
         } catch (Exception e) {

@@ -33,7 +33,7 @@ public class ServerThread extends Thread{
                                 this.setName(command[1]);
                                 logined = true;
                                 Account.register(this);
-                                send("you are logined as " + command[1]);
+                                send(Message.format("you are logined as " + command[1]));
                             }else{
                                 send("login failed!");
                             }
@@ -57,7 +57,9 @@ public class ServerThread extends Thread{
                         send(Message.format("please login!"));
                     }
                 }
-
+                for (ServerThread s : Account.getServerThreads()) {
+                    s.send(Message.format(getName() + " has left!"));
+                }
                 send("bye, Client!");
                 log("Client(" + getName() + ") exit!");
             } catch (IOException e) {
