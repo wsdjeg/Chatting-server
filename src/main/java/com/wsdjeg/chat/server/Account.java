@@ -8,6 +8,7 @@ import java.util.Map;
 public class Account {
 
     private static Map<String, String> accts = new HashMap<String ,String >();
+    private static List<String> names = new ArrayList<String>();
     static {
         accts.put("root", "1234");
         accts.put("wsdjeg", "1234");
@@ -17,7 +18,10 @@ public class Account {
     }
 
     public static boolean login(String username, String password){
-        if (accts.keySet().contains(username) && accts.get(username).equals(password)) {
+        if (accts.keySet().contains(username)
+                && accts.get(username).equals(password)
+                && !names.contains(username)) {
+            names.add(username);
             return true;
         }
         return false;
