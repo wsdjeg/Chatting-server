@@ -10,11 +10,13 @@ import com.wsdjeg.chat.server.Security;
 
 public class ServerThread extends Thread{
     private Socket client;
+    private String client_ip;
     private BufferedReader bufferedReader;
     private PrintWriter printWriter;
     private boolean logined;
     public ServerThread(Socket s) throws IOException {
         client = s;
+        client_ip = s.getInetAddress().getHostAddress();
         bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
         printWriter = new PrintWriter(client.getOutputStream(),true);
         Logger.log(Logger.INFO,"client(" + getName() + ") come in...");
@@ -24,23 +26,26 @@ public class ServerThread extends Thread{
         try {
             String line;
 
-            while ((line = bufferedReader.readLine()) != null) {
-                if (line.equals("bye")){
+            while (true) {
+                line = bufferedReader.readLine();
+                if (line == null || line.equals("bye")){
+                    Account.loginOut(this);
                     break;
-                }else if(line.indexOf("/") == 0){
+                }else if(Command.isCommand(line)){
                     if (line.indexOf("/login ") == 0) {
                         String command[] = line.split(" ");
                         if(command.length == 3
                                 && Account.login(command[1], command[2])
-                                && !Security.isBlock(client.getInetAddress().getHostAddress())) {
+                                && !Security.isBlock(client_ip)) {
                             Logger.log(Logger.INFO, "Client " + getName() + " now logined as " + command[1]);
                             this.setName(command[1]);
                             logined = true;
                             Account.register(this);
+                            Security.remove(client_ip);
                             send(Message.format("you are logined as " + command[1]));
                         }else{
-                            Security.sign(client.getInetAddress().getHostAddress());
-                            Logger.log(Logger.WARNNING, client.getInetAddress().getHostAddress()
+                            Security.sign(client_ip);
+                            Logger.log(Logger.WARNNING, client_ip
                                     + " login failed more than 3 times, blocked!");
                             send("login failed!");
                         }
@@ -54,6 +59,10 @@ public class ServerThread extends Thread{
                             Logger.log(Logger.INFO, "Client " + getName() + " now logined as " + command[1]);
                         }else{
                             send("signin failed!");
+                        }
+                    }else if (line.indexOf("/names") == 0 && logined){
+                        for (String l : Command.names()) {
+                            send(Message.format(l));
                         }
                     }
                 }else if(logined){
