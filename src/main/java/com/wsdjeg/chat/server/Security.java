@@ -28,8 +28,8 @@ public class Security {
 
     public static void sign(String ip){
         if (blockIps.containsKey(ip)) {
-            blockIps.replace(ip, blockIps.get(ip) + 1);
-            blockTime.replace(ip, System.currentTimeMillis());
+            blockIps.put(ip, blockIps.get(ip) + 1);
+            blockTime.put(ip, System.currentTimeMillis());
         }else{
             blockIps.put(ip, 1);
             blockTime.put(ip, System.currentTimeMillis());

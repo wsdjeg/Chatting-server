@@ -6,6 +6,7 @@ public class SecurityTest {
         Security.sign("127.0.0.1");
         Security.sign("127.0.0.1");
         Security.sign("127.0.0.1");
+        Security.sign("127.0.0.1");
         System.out.println(Security.isBlock("127.0.0.1"));
     }
     /* test isBlock */
