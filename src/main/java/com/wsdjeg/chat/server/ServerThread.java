@@ -19,7 +19,7 @@ public class ServerThread extends Thread{
         client_ip = s.getInetAddress().getHostAddress();
         bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
         printWriter = new PrintWriter(client.getOutputStream(),true);
-        Logger.log(Logger.INFO,"client(" + getName() + ") come in...");
+        Logger.info("Client(" + getName() + ") come in...");
         start();
     }
     public void run(){
@@ -37,7 +37,7 @@ public class ServerThread extends Thread{
                         if(command.length == 3
                                 && Account.login(command[1], command[2])
                                 && !Security.isBlock(client_ip)) {
-                            Logger.log(Logger.INFO, "Client " + getName() + " now logined as " + command[1]);
+                            Logger.info("Client(" + getName() + ") now logined as : " + command[1] + "!");
                             this.setName(command[1]);
                             logined = true;
                             Account.register(this);
@@ -45,9 +45,12 @@ public class ServerThread extends Thread{
                             send(Message.format("you are logined as " + command[1]));
                         }else{
                             Security.sign(client_ip);
-                            Logger.log(Logger.WARNNING, client_ip
-                                    + " login failed more than 3 times, blocked!");
                             send("login failed!");
+                            if (Security.isBlock(client_ip)){
+                                send("your ip is blocked, please login after 60s!");
+                                Logger.warn(client_ip
+                                        + " login failed more than 3 times, blocked!");
+                            }
                         }
                     }else if (line.indexOf("/signin ") == 0 ){
                         String command[] = line.split(" ");
@@ -56,7 +59,7 @@ public class ServerThread extends Thread{
                             logined = true;
                             Account.register(this);
                             send("signin successfully!");
-                            Logger.log(Logger.INFO, "Client " + getName() + " now logined as " + command[1]);
+                            Logger.info("Client(" + getName() + ") now logined as : " + command[1] + "!");
                         }else{
                             send("signin failed!");
                         }
@@ -77,7 +80,7 @@ public class ServerThread extends Thread{
                 s.send(Message.format(getName() + " has left!"));
             }
             send("bye, Client!");
-            log("Client(" + getName() + ") exit!");
+            Logger.info("Client(" + getName() + ") exit!");
         } catch (IOException e) {
         }finally{
             Account.loginOut(this);
@@ -88,9 +91,6 @@ public class ServerThread extends Thread{
             } catch (IOException e) {
             }
         }
-    }
-    public void log(String log){
-        System.out.println(log);
     }
     public void send(String msg){
         printWriter.println(msg);

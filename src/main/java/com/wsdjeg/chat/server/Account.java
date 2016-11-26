@@ -36,6 +36,9 @@ public class Account {
         if (serverThreads.contains(s)){
             serverThreads.remove(s);
         }
+        if (names.contains(s.getName())){
+            names.remove(s.getName());
+        }
     }
     public static List<ServerThread> getServerThreads(){
         return serverThreads;

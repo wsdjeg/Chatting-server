@@ -17,6 +17,18 @@ public class Logger {
         LEVEL = level;
     }
 
+    public static void info(String str){
+        log(INFO, str);
+    }
+
+    public static void warn(String str){
+        log(WARNNING, str);
+    }
+
+    public static void error(String str){
+        log(ERROR, str);
+    }
+
     public static void log(int type, String msg){
         if (LEVEL >= type && (type == 1 || type == 2 || type == 3)) {
             System.out.println("[" + Message.getTime() + "]" + " [" + types[type - 1] + "] " + msg);
