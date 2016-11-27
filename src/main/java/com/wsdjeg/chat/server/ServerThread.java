@@ -67,6 +67,10 @@ public class ServerThread extends Thread{
                         for (String l : Command.names()) {
                             send(Message.format(l));
                         }
+                    }else if(line.indexOf("/password") == 0 && logined){
+                        if (line.split(" ").length == 2 && Account.password(getName(), line.split(" ")[1])){
+                            send(Message.format("your password has been changed!"));
+                        }
                     }
                 }else if(logined){
                     for (ServerThread s : Account.getServerThreads()) {

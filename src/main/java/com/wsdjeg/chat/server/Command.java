@@ -9,6 +9,7 @@ public class Command {
         commands.add("/login");
         commands.add("/signin");
         commands.add("/names");
+        commands.add("/password");
     }
     private Command(){
 

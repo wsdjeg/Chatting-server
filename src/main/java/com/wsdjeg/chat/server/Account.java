@@ -59,4 +59,12 @@ public class Account {
         return true;
     }
 
+    public static boolean password(String user,String password){
+        if ( accts.keySet().contains(user)){
+            accts.put(user, password);
+            return true;
+        }
+        return false;
+    }
+
 }
