@@ -47,6 +47,13 @@ public class GroupManager {
             }
         }
         return null;
-
+    }
+    public static Group getGroup(int id){
+        for (Group g : groups) {
+            if (g.getId() == id) {
+                return g;
+            }
+        }
+        return null;
     }
 }

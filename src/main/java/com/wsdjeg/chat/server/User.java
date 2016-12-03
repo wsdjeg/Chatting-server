@@ -23,7 +23,15 @@ public class User {
             GroupManager.getGroup(gName).addMember(this);
         }else{
             // no such group, create a new one.
-            GroupManager.newGroup(gName).addMember(this);
+            Group ng = GroupManager.newGroup(gName);
+            ng.addMember(this);
+            groupIds.add(ng.getId());
+        }
+    }
+
+    public void left(){
+        for (int id : groupIds) {
+            GroupManager.getGroup(id).removeMember(this);
         }
     }
 

@@ -38,6 +38,10 @@ public class Account {
         if (names.contains(s.getName())){
             names.remove(s.getName());
         }
+        User u = UserManager.getUser(s.getName());
+        if ( u != null) {
+            u.left();
+        }
     }
     public static List<ServerThread> getServerThreads(){
         return serverThreads;
@@ -48,9 +52,6 @@ public class Account {
             return false;
         }
         if (accts.values().contains(name)){
-            if (Account.login(name, pw)){
-                return true;
-            }
             return false;
         }
 

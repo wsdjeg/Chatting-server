@@ -26,6 +26,12 @@ public  class Group {
         }
     }
 
+    public void removeMember(User user){
+        if (members.contains(user)) {
+            members.remove(user);
+        }
+    }
+
     public void send(User sender, String msg){
         String line = Message.format(getName(), sender.getUserName(), msg);
         for (User m : members) {
