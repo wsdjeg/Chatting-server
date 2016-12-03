@@ -11,7 +11,6 @@ public class Account {
     private static List<String> names = new ArrayList<String>();
     static {
         accts.put("root", "1234");
-        accts.put("wsdjeg", "1234");
     }
     private Account(){
 

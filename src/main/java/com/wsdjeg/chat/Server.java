@@ -12,6 +12,7 @@ import com.wsdjeg.chat.server.ServerThread;
 
 public class Server extends ServerSocket {
     private static final int SERVER_PORT = 2013;
+    public static final String version = "0.1.0";
 
     public static void main (String[] args) throws IOException{
         int port = 0;

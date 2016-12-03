@@ -17,6 +17,11 @@ public class Message {
         String str = "[" + getTime() + "] " + warn;
         return str;
     }
+    // send a message to a group
+    // [12:12] < #neovim > < root > hello world!
+    public static String format(String gName, String uName, String msg){
+        return "[" + getTime() + "] < " + gName + " > < " + uName + " > " + msg;
+    }
     public static String getTime(){
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         DateFormat df = new SimpleDateFormat("HH:mm");

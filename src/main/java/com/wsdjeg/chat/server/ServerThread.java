@@ -10,6 +10,8 @@ import com.wsdjeg.chat.server.Security;
 
 public class ServerThread extends Thread{
     private Socket client;
+    private User current_user;
+    private String current_channel;
     private String client_ip;
     private BufferedReader bufferedReader;
     private PrintWriter printWriter;
@@ -32,13 +34,19 @@ public class ServerThread extends Thread{
                     Account.loginOut(this);
                     break;
                 }else if(Command.isCommand(line)){
-                    if (line.indexOf("/login ") == 0) {
+                    if (line.indexOf("/help") == 0) {
+                        for (String l : Command.help()) {
+                            send(l);
+                        }
+                    }else if (line.indexOf("/login ") == 0) {
                         String command[] = line.split(" ");
                         if(command.length == 3
                                 && Account.login(command[1], command[2])
                                 && !Security.isBlock(client_ip)) {
                             Logger.info("Client(" + getName() + ") now logined as : " + command[1] + "!");
                             this.setName(command[1]);
+                            this.current_user = UserManager.getUser(command[1]);
+                            this.current_user.setClient(this);
                             logined = true;
                             Account.register(this);
                             Security.remove(client_ip);
@@ -52,12 +60,14 @@ public class ServerThread extends Thread{
                                         + " login failed more than 3 times, blocked!");
                             }
                         }
-                    }else if (line.indexOf("/signin ") == 0 ){
+                    }else if (line.indexOf("/signup ") == 0 ){
                         String command[] = line.split(" ");
                         if (command.length == 4 && Account.signin(command[1], command[2], command[3])) {
                             this.setName(command[1]);
                             logined = true;
                             Account.register(this);
+                            this.current_user = UserManager.create(command[1]);
+                            this.current_user.setClient(this);
                             send("signin successfully!");
                             Logger.info("Client(" + getName() + ") now logined as : " + command[1] + "!");
                         }else{
@@ -71,10 +81,13 @@ public class ServerThread extends Thread{
                         if (line.split(" ").length == 2 && Account.password(getName(), line.split(" ")[1])){
                             send(Message.format("your password has been changed!"));
                         }
+                    }else if(line.indexOf("/join") == 0 && logined){
+                        current_channel = line.split(" ")[1];
+                        current_user.join(current_channel);
                     }
                 }else if(logined){
-                    for (ServerThread s : Account.getServerThreads()) {
-                        s.send(Message.format(getName(), line));
+                    if (current_channel != null && !current_channel.isEmpty()) {
+                        GroupManager.getGroup(current_channel).send(current_user, line);
                     }
                 }else{
                     send(Message.format("please login!"));
