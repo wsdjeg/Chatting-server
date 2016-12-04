@@ -57,9 +57,9 @@ public class ServerThread extends Thread{
                             current_user.clearUnReadMsg();
                         }else{
                             Security.sign(client_ip);
-                            send("login failed!");
+                            send(Message.format("login failed!"));
                             if (Security.isBlock(client_ip)){
-                                send("your ip is blocked, please login after 60s!");
+                                send(Message.format("your ip is blocked, please login after 60s!"));
                                 Logger.warn(client_ip
                                         + " login failed more than 3 times, blocked!");
                             }
@@ -72,10 +72,10 @@ public class ServerThread extends Thread{
                             Account.register(this);
                             this.current_user = UserManager.create(command[1]);
                             this.current_user.setClient(this);
-                            send("signin successfully!");
+                            send(Message.format("signin successfully!"));
                             Logger.info("Client(" + getName() + ") now logined as : " + command[1] + "!");
                         }else{
-                            send("signin failed!");
+                            send(Message.format("signin failed!"));
                         }
                     }else if (line.indexOf("/names") == 0 && logined){
                         for (String l : Command.names()) {
@@ -88,6 +88,7 @@ public class ServerThread extends Thread{
                     }else if(line.indexOf("/join ") == 0 && logined){
                         current_channel = line.split(Command.SPLIT)[1];
                         current_user.join(current_channel);
+                        send(Message.format("join channel :" + current_channel));
                     }else if (line.indexOf("/msg ") == 0 && logined) {
                         String cli[] = Command.parser(line);
                         if (cli != null){
@@ -123,7 +124,7 @@ public class ServerThread extends Thread{
                     send(Message.format("please login!"));
                 }
             }
-            send("bye, Client!");
+            //send("bye, Client!");
             Logger.info("Client(" + getName() + ") exit!");
         } catch (IOException e) {
         }finally{
