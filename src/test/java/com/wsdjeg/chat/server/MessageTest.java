@@ -3,7 +3,9 @@ package com.wsdjeg.chat.server;
 public class MessageTest {
     /* test format */
     public void testFormat() {
-        System.out.println(Message.format("root", "hello\"world!"));
+        String s = "hell\"ss";
+        System.out.println(s.replace("\"", "\\" + "\""  ));
+
     }
     /* test getTime */
     public void testGetTime() {
