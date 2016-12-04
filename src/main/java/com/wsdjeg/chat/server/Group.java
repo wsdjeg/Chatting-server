@@ -20,22 +20,35 @@ public  class Group {
         return id;
     }
 
-    public void addMember(User user){
+
+    public boolean hasMember(User user){
+        return members.contains(user);
+    }
+
+    public Group addMember(User user){
         if (!members.contains(user)) {
             members.add(user);
         }
+        return this;
     }
 
-    public void removeMember(User user){
+    public Group removeMember(User user){
         if (members.contains(user)) {
             members.remove(user);
         }
+        return this;
     }
 
     public void send(User sender, String msg){
         String line = Message.format(getName(), sender.getUserName(), msg);
         for (User m : members) {
             m.send(line);
+        }
+    }
+
+    public void send(String msg){
+        for (User m : members) {
+            m.send(Message.format(msg));
         }
     }
 }

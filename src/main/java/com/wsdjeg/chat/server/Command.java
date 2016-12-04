@@ -6,6 +6,7 @@ import java.util.List;
 import com.wsdjeg.chat.Server;
 
 public class Command {
+    public static final String SPLIT = "\\s+";
     private static List<String> commands = new ArrayList<String>();
     static {
         commands.add("/login");
@@ -14,6 +15,8 @@ public class Command {
         commands.add("/names");
         commands.add("/password");
         commands.add("/join");
+        commands.add("/addfriend");
+        commands.add("/removefriend");
         commands.add("/msg");
         commands.add("/help");
     }
@@ -22,7 +25,25 @@ public class Command {
     }
 
     public static boolean isCommand(String str){
-        return commands.contains(str.split(" ")[0]);
+        return commands.contains(str.split("\\s+")[0]);
+    }
+
+    public static String[] parser(String input){
+        List<String> cli = new ArrayList<>();
+        String inputs[] = input.split("\\s+");
+        switch (inputs[0]) {
+            case "/msg":
+                if (inputs.length >= 3){
+                    cli.add(inputs[0]);
+                    cli.add(inputs[1]);
+                    cli.add(input.replaceFirst("/msg\\s+", "").replaceFirst("\\S+\\s+", ""));
+                    String[] result = new String[cli.size()];
+                    return cli.toArray(result);
+                }else{
+                    return null;
+                }
+        }
+        return null;
     }
 
     public static String[] names(){
@@ -62,6 +83,7 @@ public class Command {
         help.add("   /signup USERNAME PASSWORD PASSWORD : create a new chatting account.");
         help.add("   /password NEWPASSWORD : change the password of current user.");
         help.add("   /join GROUP : join a chatting group");
+        help.add("   /msg USER MSG : send a message to your friends or user in same group.");
 
 
         String[] array = new String[help.size()];

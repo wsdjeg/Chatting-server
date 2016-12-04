@@ -39,7 +39,7 @@ public class ServerThread extends Thread{
                             send(l);
                         }
                     }else if (line.indexOf("/login ") == 0) {
-                        String command[] = line.split(" ");
+                        String command[] = line.split(Command.SPLIT);
                         if(command.length == 3
                                 && Account.login(command[1], command[2])
                                 && !Security.isBlock(client_ip)) {
@@ -51,6 +51,10 @@ public class ServerThread extends Thread{
                             Account.register(this);
                             Security.remove(client_ip);
                             send(Message.format("you are logined as " + command[1]));
+                            for (String message : current_user.getUnReadMsg()) {
+                                send(message);
+                            }
+                            current_user.clearUnReadMsg();
                         }else{
                             Security.sign(client_ip);
                             send("login failed!");
@@ -61,7 +65,7 @@ public class ServerThread extends Thread{
                             }
                         }
                     }else if (line.indexOf("/signup ") == 0 ){
-                        String command[] = line.split(" ");
+                        String command[] = line.split(Command.SPLIT);
                         if (command.length == 4 && Account.signin(command[1], command[2], command[3])) {
                             this.setName(command[1]);
                             logined = true;
@@ -77,13 +81,39 @@ public class ServerThread extends Thread{
                         for (String l : Command.names()) {
                             send(Message.format(l));
                         }
-                    }else if(line.indexOf("/password") == 0 && logined){
-                        if (line.split(" ").length == 2 && Account.password(getName(), line.split(" ")[1])){
+                    }else if(line.indexOf("/password ") == 0 && logined){
+                        if (line.split(Command.SPLIT).length == 2 && Account.password(getName(), line.split(Command.SPLIT)[1])){
                             send(Message.format("your password has been changed!"));
                         }
-                    }else if(line.indexOf("/join") == 0 && logined){
-                        current_channel = line.split(" ")[1];
+                    }else if(line.indexOf("/join ") == 0 && logined){
+                        current_channel = line.split(Command.SPLIT)[1];
                         current_user.join(current_channel);
+                    }else if (line.indexOf("/msg ") == 0 && logined) {
+                        String cli[] = Command.parser(line);
+                        if (cli != null){
+                            User u = UserManager.getUser(cli[1]);
+                            if (u != null) {
+                                if (current_user.isFriend(u) || current_user.hasSameGroup(u)) {
+                                    u.send(current_user, cli[2]);
+                                }else{
+                                    send(Message.format("you and " + cli[1] + " are not friend or in same group!"));
+                                }
+                            }else{
+                                send(Message.format("No such user: " + cli[1]));
+                            }
+                        }else{
+                            send(Message.format("Wrong input, please use /msg userName message!"));
+                        }
+                    }else if(line.indexOf("/addfriend ") == 0&& logined){
+                        User u = UserManager.getUser(line.split(Command.SPLIT)[1]);
+                        if (u != null) {
+                            current_user.addFriend(u);
+                        }
+                    }else if(line.indexOf("/removefriend ") == 0 && logined){
+                        User u = UserManager.getUser(line.split(Command.SPLIT)[1]);
+                        if (u != null) {
+                            current_user.removeFriend(u);
+                        }
                     }
                 }else if(logined){
                     if (current_channel != null && !current_channel.isEmpty()) {
@@ -92,9 +122,6 @@ public class ServerThread extends Thread{
                 }else{
                     send(Message.format("please login!"));
                 }
-            }
-            for (ServerThread s : Account.getServerThreads()) {
-                s.send(Message.format(getName() + " has left!"));
             }
             send("bye, Client!");
             Logger.info("Client(" + getName() + ") exit!");

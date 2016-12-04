@@ -17,7 +17,8 @@ public class UserTest {
     }
     /* test getClient */
     public void testGetClient() {
-        //TODO
+        String str = "/msg   nihao    122 aaa";
+        System.out.println(str.replaceFirst("/msg\\s+", "").replaceFirst("\\S+\\s+", ""));
     }
     /* test setClient */
     public void testSetClient() {

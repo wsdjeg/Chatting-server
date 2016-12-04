@@ -51,11 +51,12 @@ public class Account {
         if (!pw.equals(pwcf)) {
             return false;
         }
-        if (accts.values().contains(name)){
+        if (accts.containsKey(name)){
             return false;
         }
 
         accts.put(name, pw);
+        names.add(name);
         return true;
     }
 

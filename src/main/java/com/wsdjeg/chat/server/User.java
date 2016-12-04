@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class User {
     private String userName;
+    private List<String> unReadMsg = new ArrayList<>();
     private ServerThread client;
     private List<User> friends = new ArrayList<>();
     private List<Integer> groupIds = new ArrayList<>();
@@ -31,7 +32,9 @@ public class User {
 
     public void left(){
         for (int id : groupIds) {
-            GroupManager.getGroup(id).removeMember(this);
+            GroupManager.getGroup(id)
+                .removeMember(this)
+                .send(getUserName() + " has left!");
         }
     }
 
@@ -47,6 +50,15 @@ public class User {
         }
     }
 
+    public String[] getUnReadMsg(){
+        String[] msgs = new String[unReadMsg.size()];
+        return unReadMsg.toArray(msgs);
+    }
+
+    public void clearUnReadMsg(){
+        unReadMsg.clear();
+    }
+
     public List<User> getFriends(){
         return friends;
     }
@@ -60,7 +72,31 @@ public class User {
     }
 
     public void send(String msg){
-        client.send(msg);
+            client.send(msg);
+    }
+
+    /**
+     * snnder : who send the message to current user;
+     */
+    public void send(User sender, String msg){
+        if (client == null || !client.isAlive()) {
+            unReadMsg.add(Message.format(sender.getUserName(), msg));
+        }else{
+            client.send(Message.format(sender.getUserName(), msg));
+        }
+    }
+
+    public boolean isFriend(User user){
+        return friends.contains(user);
+    }
+
+    public boolean hasSameGroup(User user){
+        for (int id  : groupIds) {
+            if(GroupManager.getGroup(id).hasMember(user)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void setClient(ServerThread client) {
