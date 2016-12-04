@@ -46,11 +46,11 @@ public class Command {
         return null;
     }
 
-    public static String[] names(){
+    public static String[] names(String ch){
         ArrayList<String> rst = new ArrayList<String>();
         String line = "";
-        for (ServerThread s : Account.getServerThreads()) {
-            line += "[" + s.getName() + "] ";
+        for (User s : GroupManager.getGroup(ch).getMembers()) {
+            line += "[" + s.getUserName() + "] ";
             if (line.length() > 50) {
                 rst.add(line);
                 line = "";
@@ -83,6 +83,7 @@ public class Command {
         help.add("   /signup USERNAME PASSWORD PASSWORD : create a new chatting account.");
         help.add("   /password NEWPASSWORD : change the password of current user.");
         help.add("   /join GROUP : join a chatting group");
+        help.add("   /names : list the use in current channel");
         help.add("   /msg USER MSG : send a message to your friends or user in same group.");
 
 

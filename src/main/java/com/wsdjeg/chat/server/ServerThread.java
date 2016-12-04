@@ -78,8 +78,10 @@ public class ServerThread extends Thread{
                             send(Message.format("signin failed!"));
                         }
                     }else if (line.indexOf("/names") == 0 && logined){
-                        for (String l : Command.names()) {
-                            send(Message.format(l));
+                        if (current_channel != null){
+                            for (String l : Command.names(current_channel)) {
+                                send(Message.format(l));
+                            }
                         }
                     }else if(line.indexOf("/password ") == 0 && logined){
                         if (line.split(Command.SPLIT).length == 2 && Account.password(getName(), line.split(Command.SPLIT)[1])){

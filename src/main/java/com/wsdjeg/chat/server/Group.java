@@ -51,4 +51,8 @@ public  class Group {
             m.send(Message.format(msg));
         }
     }
+
+    public List<User> getMembers() {
+        return members;
+    }
 }
