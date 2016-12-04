@@ -19,6 +19,7 @@ public class Command {
         commands.add("/removefriend");
         commands.add("/msg");
         commands.add("/help");
+        commands.add("/list");
     }
     private Command(){
 
@@ -89,5 +90,14 @@ public class Command {
 
         String[] array = new String[help.size()];
         return help.toArray(array);
+    }
+
+    public static String[] list(){
+        List<String> gs = new ArrayList<>();
+        for (Group g: GroupManager.getGroups()) {
+            gs.add(g.getName());
+        }
+        String[] result = new String[gs.size()];
+        return gs.toArray(result);
     }
 }

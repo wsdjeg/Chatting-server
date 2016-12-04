@@ -36,7 +36,7 @@ public class ServerThread extends Thread{
                 }else if(Command.isCommand(line)){
                     if (line.indexOf("/help") == 0) {
                         for (String l : Command.help()) {
-                            send(l);
+                            send(Message.format(l));
                         }
                     }else if (line.indexOf("/login ") == 0) {
                         String command[] = line.split(Command.SPLIT);
@@ -116,6 +116,10 @@ public class ServerThread extends Thread{
                         User u = UserManager.getUser(line.split(Command.SPLIT)[1]);
                         if (u != null) {
                             current_user.removeFriend(u);
+                        }
+                    }else if (line.indexOf("/list") == 0 && logined) {
+                        for (String name : Command.list()) {
+                            send(Message.format(name));
                         }
                     }
                 }else if(logined){

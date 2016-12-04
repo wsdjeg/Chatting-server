@@ -18,6 +18,7 @@ public class GroupManager {
 
     private static List<Group> groups = new ArrayList<>();
 
+
     public static Group newGroup(String name){
         if (getGroupId(name) == 0){
             Group group = new Group(name);
@@ -55,5 +56,9 @@ public class GroupManager {
             }
         }
         return null;
+    }
+
+    public static List<Group> getGroups() {
+        return groups;
     }
 }
