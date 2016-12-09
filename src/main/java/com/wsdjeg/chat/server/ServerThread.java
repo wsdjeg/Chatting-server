@@ -7,8 +7,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import com.wsdjeg.chat.server.Security;
+import com.wsdjeg.chat.server.bot.Bot;
+import com.wsdjeg.chat.server.bot.BotFactory;
 
 public class ServerThread extends Thread{
+    private boolean isChatWithBot;
+    private Bot bot;
     private Socket client;
     private User current_user;
     private String current_channel;
@@ -84,7 +88,8 @@ public class ServerThread extends Thread{
                             }
                         }
                     }else if(line.indexOf("/password ") == 0 && logined){
-                        if (line.split(Command.SPLIT).length == 2 && Account.password(getName(), line.split(Command.SPLIT)[1])){
+                        if (line.split(Command.SPLIT).length == 2
+                                && Account.password(getName(), line.split(Command.SPLIT)[1])){
                             send(Message.format("your password has been changed!"));
                         }
                     }else if(line.indexOf("/join ") == 0 && logined){
@@ -99,7 +104,9 @@ public class ServerThread extends Thread{
                                 if (current_user.isFriend(u) || current_user.hasSameGroup(u)) {
                                     u.send(current_user, cli[2]);
                                 }else{
-                                    send(Message.format("you and " + cli[1] + " are not friend or in same group!"));
+                                    send(Message.format("you and "
+                                                + cli[1]
+                                                + " are not friend or in same group!"));
                                 }
                             }else{
                                 send(Message.format("No such user: " + cli[1]));
@@ -121,10 +128,24 @@ public class ServerThread extends Thread{
                         for (String name : Command.list()) {
                             send(Message.format(name));
                         }
+                    }else if(line.indexOf("/connect ") == 0 && logined){
+                        if (line.split(Command.SPLIT).length >= 2) {
+                            bot = BotFactory.getBot(line.split(Command.SPLIT)[1]);
+                            if (bot != null) {
+                                isChatWithBot = true;
+                            }
+                        }
+                    }else if(line.indexOf("/disconnect") == 0 && logined){
+                        bot = null;
+                        isChatWithBot = false;
                     }
                 }else if(logined){
-                    if (current_channel != null && !current_channel.isEmpty()) {
+                    if (current_channel != null
+                            && !current_channel.isEmpty()
+                            && !isChatWithBot) {
                         GroupManager.getGroup(current_channel).send(current_user, line);
+                    }else if(isChatWithBot){
+                        send(Message.format(bot.reply(line)));
                     }
                 }else{
                     send(Message.format("please login!"));

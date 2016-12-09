@@ -20,6 +20,8 @@ public class Command {
         commands.add("/msg");
         commands.add("/help");
         commands.add("/list");
+        commands.add("/connect");
+        commands.add("/disconnect");
     }
     private Command(){
 
@@ -88,8 +90,7 @@ public class Command {
         help.add("   /msg USER MSG : send a message to your friends or user in same group.");
 
 
-        String[] array = new String[help.size()];
-        return help.toArray(array);
+        return help.toArray(new String[help.size()]);
     }
 
     public static String[] list(){
