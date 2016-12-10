@@ -7,6 +7,7 @@ import com.wsdjeg.chat.server.Command;
 import com.wsdjeg.chat.server.util.MathUtils;
 
 public class MathBot implements Bot{
+    private String version = "0.1.0";
     private String GET_LIST_BY_SUM = "/get_list_by_sum";
     private List<Integer> integerList = new ArrayList<>();
     private String type;
@@ -36,5 +37,17 @@ public class MathBot implements Bot{
 
     private boolean isInteger(String i){
         return i.matches("^[1-9][0-9]*$");
+    }
+
+    public String[] help(){
+        List<String> help = new ArrayList<String>();
+
+        help.add("MathBot : V" + this.version);
+        help.add("types :");
+        help.add("   /get_list_by_sum :");
+        help.add("      /sum Integer: get the result.");
+
+
+        return help.toArray(new String[help.size()]);
     }
 }

@@ -39,8 +39,14 @@ public class ServerThread extends Thread{
                     break;
                 }else if(Command.isCommand(line)){
                     if (line.indexOf("/help") == 0) {
-                        for (String l : Command.help()) {
-                            send(Message.format(l));
+                        if (isChatWithBot) {
+                            for (String l : bot.help()) {
+                                send(Message.format(l));
+                            }
+                        }else{
+                            for (String l : Command.help()) {
+                                send(Message.format(l));
+                            }
                         }
                     }else if (line.indexOf("/login ") == 0) {
                         String command[] = line.split(Command.SPLIT);
