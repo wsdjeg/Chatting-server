@@ -34,7 +34,7 @@ public class Message {
     }
     public static String getTime(){
         Timestamp ts = new Timestamp(System.currentTimeMillis());
-        DateFormat df = new SimpleDateFormat("HH:mm");
+        DateFormat df = new SimpleDateFormat("HH:mm:ss");
         return df.format(ts);
     }
 }
