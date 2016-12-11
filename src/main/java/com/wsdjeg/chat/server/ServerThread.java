@@ -139,9 +139,13 @@ public class ServerThread extends Thread{
                             bot = BotFactory.getBot(line.split(Command.SPLIT)[1]);
                             if (bot != null) {
                                 isChatWithBot = true;
+                                send(Message.format("Now chatting with a bot:" + bot.getName()));
                             }
                         }
                     }else if(line.indexOf("/disconnect") == 0 && logined){
+                        if (bot != null) {
+                            send(Message.format(bot.getName() + " is left!"));
+                        }
                         bot = null;
                         isChatWithBot = false;
                     }
