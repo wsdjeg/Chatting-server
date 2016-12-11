@@ -8,9 +8,9 @@ public class JsonBuilderTest {
     public void testDecode() {
         Map<String,String> o = new HashMap<>();
         o.put("name", "wsdjeg");
-        o.put("pa\"ssword", "12\"34");
+        o.put("pa\"ssword", "12\\" + "\"34");
         System.out.println(JsonBuilder.decode(o));
-        // output: {"name":"wsdjeg","pa\"ssword":"12\"34"}
+        // output: {"name":"wsdjeg","pa\\\"ssword":"12\"34"}
     }
 
 }

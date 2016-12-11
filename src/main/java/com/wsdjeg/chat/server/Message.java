@@ -6,31 +6,36 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.wsdjeg.chat.server.util.JsonBuilder;
 
 public class Message {
-    //private Message(){
-    //}
-    // message from a user
-    // example: ["12:12","root", "helloworld!"]
     public static String format(String name, String msg){
-        name = name.replace("\"", "\\" + "\"");
-        msg = msg.replace("\"","\\" + "\"");
-        String str = "[\"" + getTime() + "\",\"" + name + "\",\"" + msg + "\"]";
-        return str;
+        Map<String,String> m = new HashMap<>();
+        m.put("time", getTime());
+        m.put("type", "user_message");
+        m.put("sendder", name);
+        m.put("context", msg);
+        return JsonBuilder.decode(m);
     }
-    public static String format(String warn){
-        warn = warn.replace("\"", "\\" + "\"");
-        String str = "[\"" + getTime() + "\",\"" + warn + "\"]";
-        return str;
+    public static String format(String msg){
+        Map<String,String> m = new HashMap<>();
+        m.put("time", getTime());
+        m.put("type", "info_message");
+        m.put("context", msg);
+        return JsonBuilder.decode(m);
     }
-    // send a message to a group
-    // [12:12] < #neovim > < root > hello world!
     public static String format(String gName, String uName, String msg){
-        gName = gName.replace("\"", "\\" + "\"");
-        uName = uName.replace("\"", "\\" + "\"");
-        msg = msg.replace("\"", "\\" + "\"");
-        return "[\"" + getTime() + "\",\"" + gName + "\",\"" + uName + "\",\"" + msg + "\"]";
+        Map<String,String> m = new HashMap<>();
+        m.put("time", getTime());
+        m.put("type", "group_message");
+        m.put("sendder", uName);
+        m.put("context", msg);
+        m.put("group_name", gName);
+        return JsonBuilder.decode(m);
     }
     public static String getTime(){
         Timestamp ts = new Timestamp(System.currentTimeMillis());
