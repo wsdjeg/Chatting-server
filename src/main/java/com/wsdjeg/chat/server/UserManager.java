@@ -26,7 +26,7 @@ public class UserManager {
             add(user);
             return user;
         }
-        return null;
+        return getUser(name);
     }
     public static User getUser(String name){
         for (User user : users) {

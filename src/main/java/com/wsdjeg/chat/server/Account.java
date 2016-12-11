@@ -113,7 +113,6 @@ public class Account {
         accts.put(name, pw);
         if (!Server.databaseFileName.isEmpty()) {
             updateDatabase(new File(Server.databaseFileName));
-            System.out.println(Server.databaseFileName);
         }
         names.add(name);
         return true;
@@ -122,6 +121,9 @@ public class Account {
     public static boolean password(String user,String password){
         if ( accts.keySet().contains(user)){
             accts.put(user, password);
+            if (!Server.databaseFileName.isEmpty()) {
+                updateDatabase(new File(Server.databaseFileName));
+            }
             return true;
         }
         return false;
