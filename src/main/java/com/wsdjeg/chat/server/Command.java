@@ -79,7 +79,7 @@ public class Command {
     public static String[] help(){
         List<String> help = new ArrayList<String>();
 
-        help.add("Chatting Server: V" + Server.version);
+        help.add("Chatting Server: V" + Server.VERSION);
         help.add("commands :");
         help.add("   /help : show help message.");
         help.add("   /login USERNAME PASSWORD : login with your chatting account.");

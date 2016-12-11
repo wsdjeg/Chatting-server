@@ -1,19 +1,74 @@
 package com.wsdjeg.chat.server;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import com.wsdjeg.chat.Server;
 
 public class Account {
 
     private static Map<String, String> accts = new HashMap<String ,String >();
     private static List<String> names = new ArrayList<String>();
     static {
-        accts.put("root", "1234");
+        if (!Server.databaseFileName.isEmpty()) {
+            File db = new File(Server.databaseFileName);
+            if (db.exists() && db.isFile() && db.canRead() && db.canWrite()) {
+                Logger.info("Loadding accounts from database file :" + Server.databaseFileName);
+                accts = loadDatabase(db);
+            }
+        }
+        if (!accts.keySet().contains("root")) {
+            accts.put("root", "1234");
+        }
     }
     private Account(){
 
+    }
+    public static Set<String> getAllAccounts(){
+        return accts.keySet();
+    }
+    @SuppressWarnings("unchecked")
+    public static Map<String,String> loadDatabase(File file){
+        ObjectInputStream is;
+        Map<String,String> loadAccts = new HashMap<>();
+        try {
+            is = new ObjectInputStream(new FileInputStream(file));
+            loadAccts = (Map<String,String>)is.readObject();
+        } catch (FileNotFoundException e) {
+            Logger.error("File can not found:" + file.getPath());
+        } catch (IOException e){
+            Logger.error("Can not load accounts from database.");
+        } catch (ClassNotFoundException e){
+            Logger.error("Can not readObject from database.");
+        }
+        return loadAccts;
+    }
+
+    public static void updateDatabase(File f) {
+        try{
+            FileOutputStream out = new FileOutputStream(f);
+            out.write(new String("").getBytes());
+            out.close();
+            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(f));
+            os.writeObject(accts);
+            os.close();
+        }catch (FileNotFoundException e){
+            Logger.error("File can not found:" + f.getPath());
+        }catch (IOException e){
+            Logger.error("Can not update database.");
+        }
     }
 
     public static boolean login(String username, String password){
@@ -56,6 +111,9 @@ public class Account {
         }
 
         accts.put(name, pw);
+        if (!Server.databaseFileName.isEmpty()) {
+            updateDatabase(new File(Server.databaseFileName));
+        }
         names.add(name);
         return true;
     }
@@ -63,6 +121,9 @@ public class Account {
     public static boolean password(String user,String password){
         if ( accts.keySet().contains(user)){
             accts.put(user, password);
+            if (!Server.databaseFileName.isEmpty()) {
+                updateDatabase(new File(Server.databaseFileName));
+            }
             return true;
         }
         return false;

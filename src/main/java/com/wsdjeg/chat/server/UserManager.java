@@ -11,7 +11,9 @@ import java.util.List;
 public class UserManager {
     private static List<User> users = new ArrayList<>();
     static {
-        add(create("root"));
+        for (String acct : Account.getAllAccounts()) {
+            add(create(acct));
+        }
     }
     public static void add(User user){
         if (!users.contains(user)){
@@ -24,7 +26,7 @@ public class UserManager {
             add(user);
             return user;
         }
-        return null;
+        return getUser(name);
     }
     public static User getUser(String name){
         for (User user : users) {
