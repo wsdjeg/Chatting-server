@@ -6,7 +6,7 @@ public class Logger {
     private Logger(){
     }
 
-    public static int LEVEL = 3;
+    public static int LEVEL = 0;
 
     public final static int ERROR = 1;
     public final static int WARNNING = 2;

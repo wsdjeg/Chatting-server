@@ -8,10 +8,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.wsdjeg.chat.server.Account;
+import com.wsdjeg.chat.server.Logger;
 import com.wsdjeg.chat.server.ServerThread;
 
 public class Server extends ServerSocket {
-    private static boolean debugMode = false;
     private static int SERVER_PORT = 2013;
     public static String databaseFileName = "";
     public static final String VERSION = "0.1.0";
@@ -30,7 +30,7 @@ public class Server extends ServerSocket {
                     databaseFileName = args[++i];
                     break;
                 case "-d":
-                    debugMode = true;
+                    Logger.setLevel(Integer.valueOf(args[++i]));
                     break;
                 case "-D":
                     SERVER_PORT = Integer.valueOf(args[++i]);
@@ -72,7 +72,7 @@ public class Server extends ServerSocket {
         System.out.println("Options:");
         System.out.println("  -h	        help");
         System.out.println("  -v	        version");
-        System.out.println("  -d            enable debug mode");
+        System.out.println("  -d            debug level");
         System.out.println("  -database     use database file");
         System.out.println("  -D port       start daemon on specified port");
     }
