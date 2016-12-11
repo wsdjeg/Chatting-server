@@ -13,7 +13,7 @@ import com.wsdjeg.chat.server.ServerThread;
 public class Server extends ServerSocket {
     private static boolean debugMode = false;
     private static int SERVER_PORT = 2013;
-    private static String databaseFileName = "";
+    public static String databaseFileName = "";
     public static final String VERSION = "0.1.0";
 
     public static void main (String[] args) throws IOException{
@@ -26,7 +26,7 @@ public class Server extends ServerSocket {
                 case "-v":
                     version();
                     return;
-                case "--database":
+                case "-database":
                     databaseFileName = args[++i];
                     break;
                 case "-d":
@@ -73,6 +73,7 @@ public class Server extends ServerSocket {
         System.out.println("  -h	        help");
         System.out.println("  -v	        version");
         System.out.println("  -d            enable debug mode");
+        System.out.println("  -database     use database file");
         System.out.println("  -D port       start daemon on specified port");
     }
     public static void version(){
