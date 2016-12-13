@@ -15,6 +15,7 @@ public class ServerThread extends Thread{
     private Bot bot;
     private Socket client;
     private User current_user;
+    private User query_user;
     private String current_channel;
     private String client_ip;
     private BufferedReader bufferedReader;
@@ -99,9 +100,13 @@ public class ServerThread extends Thread{
                             send(Message.format("your password has been changed!"));
                         }
                     }else if(line.indexOf("/join ") == 0 && logined){
-                        current_channel = line.split(Command.SPLIT)[1];
-                        current_user.join(current_channel);
-                        send(Message.format("join channel :" + current_channel));
+                        String cli[] = Command.parser(line);
+                        if (cli != null){
+                            current_channel = cli[1];
+                            query_user = null;
+                            current_user.join(current_channel);
+                            send(Message.onWindowChange(GroupManager.getGroup(current_channel)));
+                        }
                     }else if (line.indexOf("/msg ") == 0 && logined) {
                         String cli[] = Command.parser(line);
                         if (cli != null){
@@ -119,6 +124,26 @@ public class ServerThread extends Thread{
                             }
                         }else{
                             send(Message.format("Wrong input, please use /msg userName message!"));
+                        }
+                    }else if(line.indexOf("/query ") == 0 && logined){
+                        String cli[] = Command.parser(line);
+                        if (cli != null){
+                            User u = UserManager.getUser(cli[1]);
+                            if (u != null) {
+                                if (current_user.isFriend(u) || current_user.hasSameGroup(u)) {
+                                    query_user = u;
+                                    current_channel = null;
+                                    send(Message.onWindowChange(u));
+                                }else{
+                                    send(Message.format("you and "
+                                                + cli[1]
+                                                + " are not friend or in same group!"));
+                                }
+                            }else{
+                                send(Message.format("No such user: " + cli[1]));
+                            }
+                        }else{
+                            send(Message.format("Wrong input, please use /query userName"));
                         }
                     }else if(line.indexOf("/addfriend ") == 0&& logined){
                         User u = UserManager.getUser(line.split(Command.SPLIT)[1]);
@@ -156,6 +181,8 @@ public class ServerThread extends Thread{
                         GroupManager.getGroup(current_channel).send(current_user, line);
                     }else if(isChatWithBot){
                         send(Message.format(bot.reply(line)));
+                    }else if (query_user != null) {
+                        query_user.send(current_user, line);
                     }
                 }else{
                     send(Message.format("please login!"));

@@ -1,5 +1,8 @@
 package com.wsdjeg.chat.server;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class CommandTest {
     /* test help */
     public void testHelp() {
@@ -11,8 +14,17 @@ public class CommandTest {
     }
     /* test parser */
     public void testParser() {
-        for (String s :Command.parser("/msg  nihao sss aaa")){
-            System.out.println(s);
+        Set<String> s = new HashSet<>();
+        s.add("/msg root 123");
+        s.add("/query root");
+        s.add("/join #vim");
+        for (String cmd : s) {
+            for (String arg :Command.parser(cmd)){
+                System.out.print(arg);
+                System.out.print(" ");
+            }
+            System.out.println();
+
         }
     }
     /* test isCommand */

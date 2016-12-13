@@ -18,6 +18,7 @@ public class Command {
         commands.add("/addfriend");
         commands.add("/removefriend");
         commands.add("/msg");
+        commands.add("/query");
         commands.add("/help");
         commands.add("/list");
         commands.add("/connect");
@@ -42,8 +43,22 @@ public class Command {
                     cli.add(input.replaceFirst("/msg\\s+", "").replaceFirst("\\S+\\s+", ""));
                     String[] result = new String[cli.size()];
                     return cli.toArray(result);
-                }else{
-                    return null;
+                }
+                break;
+            case "/query":
+                if (inputs.length == 2 && inputs[1].matches("^[^#^\\s]+$")) {
+                    cli.add(inputs[0]);
+                    cli.add(inputs[1]);
+                    String[] result = new String[cli.size()];
+                    return cli.toArray(result);
+                }
+                break;
+            case "/join":
+                if (inputs.length == 2 && inputs[1].matches("^#[^\\s]+")) {
+                    cli.add(inputs[0]);
+                    cli.add(inputs[1]);
+                    String[] result = new String[cli.size()];
+                    return cli.toArray(result);
                 }
         }
         return null;

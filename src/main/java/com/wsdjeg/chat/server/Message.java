@@ -37,6 +37,22 @@ public class Message {
         m.put("group_name", gName);
         return JsonBuilder.decode(m);
     }
+
+    public static String onWindowChange(Group g){
+        Map<String,String> m = new HashMap<>();
+        m.put("time", getTime());
+        m.put("type", "onWindowChange");
+        m.put("name", g.getName());
+        return JsonBuilder.decode(m);
+    }
+
+    public static String onWindowChange(User u){
+        Map<String,String> m = new HashMap<>();
+        m.put("time", getTime());
+        m.put("type", "onWindowChange");
+        m.put("name", u.getUserName());
+        return JsonBuilder.decode(m);
+    }
     public static String getTime(){
         Timestamp ts = new Timestamp(System.currentTimeMillis());
         DateFormat df = new SimpleDateFormat("HH:mm:ss");
