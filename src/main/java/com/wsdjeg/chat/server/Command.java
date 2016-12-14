@@ -1,35 +1,37 @@
 package com.wsdjeg.chat.server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.wsdjeg.chat.Server;
 
 public class Command {
     public static final String SPLIT = "\\s+";
-    private static List<String> commands = new ArrayList<String>();
+    private static Map<String,String> cmds = new HashMap<>();
     static {
-        commands.add("/login");
-        commands.add("/logout");
-        commands.add("/signup");
-        commands.add("/names");
-        commands.add("/password");
-        commands.add("/join");
-        commands.add("/addfriend");
-        commands.add("/removefriend");
-        commands.add("/msg");
-        commands.add("/query");
-        commands.add("/help");
-        commands.add("/list");
-        commands.add("/connect");
-        commands.add("/disconnect");
+        cmds.put("/help"         , "   /help : show help message.");
+        cmds.put("/login"        , "   /login USERNAME PASSWORD : login with your chatting account.");
+        cmds.put("/logout"       , "   /logout : logout current account.");
+        cmds.put("/signup"       , "   /signup : create a new account.");
+        cmds.put("/password"     , "   /password : change the password of current user.");
+        cmds.put("/names"        , "   /names : list all the user in current channel.");
+        cmds.put("/join"         , "   /join : join a channel.");
+        cmds.put("/msg"          , "   /msg : send a message to a user.");
+        cmds.put("/query"        , "   /query : chatting with a user.");
+        cmds.put("/addfriend"    , "   /addfriend : add a friend.");
+        cmds.put("/removefriend" , "   /removefriend : remove a friend.");
+        cmds.put("/list"         , "   /list : list all the channels in the server.");
+        cmds.put("/connect"      , "   /connect : connect to a bot.");
+        cmds.put("/disconnect"   , "   /disconnect : disconnect with a bot.");
     }
     private Command(){
 
     }
 
     public static boolean isCommand(String str){
-        return commands.contains(str.split("\\s+")[0]);
+        return cmds.keySet().contains(str.split("\\s+")[0]);
     }
 
     public static String[] parser(String input){
@@ -88,7 +90,7 @@ public class Command {
      *    /signup USERNAME PASSWORD PASSWORD : create a new chatting account.
      *    /password NEWPASSWORD : change the password of current user.
      *    /join GROUP : join a chatting group
-     *
+     *    ...
      *
      */
     public static String[] help(){
@@ -96,13 +98,7 @@ public class Command {
 
         help.add("Chatting Server: V" + Server.VERSION);
         help.add("commands :");
-        help.add("   /help : show help message.");
-        help.add("   /login USERNAME PASSWORD : login with your chatting account.");
-        help.add("   /signup USERNAME PASSWORD PASSWORD : create a new chatting account.");
-        help.add("   /password NEWPASSWORD : change the password of current user.");
-        help.add("   /join GROUP : join a chatting group");
-        help.add("   /names : list the use in current channel");
-        help.add("   /msg USER MSG : send a message to your friends or user in same group.");
+        help.addAll(cmds.values());
 
 
         return help.toArray(new String[help.size()]);
