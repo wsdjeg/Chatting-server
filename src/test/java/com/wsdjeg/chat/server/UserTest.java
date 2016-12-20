@@ -1,5 +1,7 @@
 package com.wsdjeg.chat.server;
 
+import com.wsdjeg.chat.server.bot.SmartBot;
+
 public class UserTest {
     /* test join */
     public void testJoin() {
@@ -47,6 +49,12 @@ public class UserTest {
     /* test addFriend */
     public void testAddFriend() {
         //TODO
+    }
+
+    public void testSetSmartBot(){
+        User u = new User("123");
+        u.setSmartBot(new SmartBot());
+        u.setSmartBot(new SmartBot());
     }
 
 }

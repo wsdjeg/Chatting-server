@@ -51,9 +51,16 @@ public class SmartBot implements Bot {
                     return "you have set " + name + "(SmartBot) as " + u.getUserName() +" smartBot!";
                 }
             }
-        }else if (string.matches("^/learn\\s\\S+\\s\\S+$")) {
+        }else if (string.matches("^/learn\\s\\S+\\s(\\S+\\s*)+$")) {
             String[] cmds = string.split(Command.SPLIT);
-            msgDict.put(cmds[1], cmds[2]);
+            String lmsg = "";
+            for (int i = 2; i < cmds.length; i++) {
+                if (!lmsg.isEmpty()) {
+                    lmsg += " ";
+                }
+                lmsg += cmds[i];
+            }
+            msgDict.put(cmds[1], lmsg);
             return "learn " + cmds[1];
         }else if (string.matches("^/rename\\s\\S+$")) {
             String[] cmds = string.split(Command.SPLIT);
