@@ -129,4 +129,11 @@ public class Account {
         return false;
     }
 
+    public static boolean loginAble(String name,String pw){
+        if (accts.keySet().contains(name) && accts.get(name).equals(pw)) {
+            return true;
+        }
+        return false;
+    }
+
 }

@@ -3,12 +3,15 @@ package com.wsdjeg.chat.server;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.wsdjeg.chat.server.bot.SmartBot;
 /**
  * User public API:
  * 1. `/join` : join or create a group
  */
 public class User {
     private String userName;
+    private SmartBot smartBot;
     private List<String> unReadMsg = new ArrayList<>();
     private ServerThread client;
     private List<User> friends = new ArrayList<>();
@@ -81,6 +84,12 @@ public class User {
     public void send(User sender, String msg){
         if (client == null || !client.isAlive()) {
             unReadMsg.add(Message.format(sender.getUserName(), msg));
+            if (smartBot != null) {
+                String reply;
+                if ((reply = smartBot.reply(msg)) != null) {
+                    sender.send(this, reply);
+                }
+            }
         }else{
             client.send(Message.format(sender.getUserName(), msg));
         }
@@ -122,5 +131,15 @@ public class User {
         User object = (User) o;
 
         return !(userName != null ? !userName.equals(object.userName) : object.userName != null);
+    }
+
+    public void setSmartBot(SmartBot smartBot) {
+        if (this.smartBot == null) {
+            this.smartBot = smartBot;
+        }else{
+            smartBot.getMsgDict().putAll(this.smartBot.getMsgDict());
+            smartBot.setName(this.smartBot.getName());
+            this.smartBot = smartBot;
+        }
     }
 }

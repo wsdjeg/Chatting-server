@@ -7,8 +7,14 @@ public class JsonBuilder {
         String begin = "{";
         for (String key : o.keySet()) {
             begin = begin
-                +  "\"" + key.replace("\"", "\\" + "\"")
-                + "\":\"" + o.get(key).replace("\\", "\\" + "\\").replace("\"", "\\" + "\"")
+                +  "\"" + key
+                .replace("\\", "\\" + "\\")
+                .replace("\"", "\\" + "\"")
+                .replace(":", "\\:")
+                + "\":\"" + o.get(key)
+                .replace("\\", "\\" + "\\")
+                .replace("\"", "\\" + "\"")
+                .replace(":", "\\:")
                 + "\"," ;
         }
 

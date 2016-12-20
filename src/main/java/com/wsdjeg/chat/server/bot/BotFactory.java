@@ -5,6 +5,8 @@ public class BotFactory {
         switch (botName) {
             case "MathBot":
                 return new MathBot();
+            case "SmartBot":
+                return new SmartBot();
         }
         return null;
     }
