@@ -54,17 +54,6 @@ public class Server extends ServerSocket {
             e.printStackTrace();
         }
     }
-    public Server(int port) throws IOException {
-        super(port);
-        try {
-            while (true) {
-                Socket socket = accept();
-                new ServerThread(socket);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     public static void usage(){
         version();
