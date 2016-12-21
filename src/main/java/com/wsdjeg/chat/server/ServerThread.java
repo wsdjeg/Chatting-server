@@ -26,7 +26,7 @@ public class ServerThread extends Thread{
         client_ip = s.getInetAddress().getHostAddress();
         bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
         printWriter = new PrintWriter(client.getOutputStream(),true);
-        Logger.info("Client(" + getName() + ") come in...");
+        Logger.info("Client(" + client_ip + ") come in...");
         start();
     }
     public void run(){
@@ -54,7 +54,7 @@ public class ServerThread extends Thread{
                         if(command.length == 3
                                 && Account.login(command[1], command[2])
                                 && !Security.isBlock(client_ip)) {
-                            Logger.info("Client(" + getName() + ") now logined as : " + command[1] + "!");
+                            Logger.info("Client(" + client_ip + ") now logined as : " + command[1] + "!");
                             this.setName(command[1]);
                             this.current_user = UserManager.getUser(command[1]);
                             this.current_user.setClient(this);
