@@ -10,11 +10,9 @@ public class JsonBuilder {
                 +  "\"" + key
                 .replace("\\", "\\" + "\\")
                 .replace("\"", "\\" + "\"")
-                .replace(":", "\\:")
                 + "\":\"" + o.get(key)
                 .replace("\\", "\\" + "\\")
                 .replace("\"", "\\" + "\"")
-                .replace(":", "\\:")
                 + "\"," ;
         }
 
