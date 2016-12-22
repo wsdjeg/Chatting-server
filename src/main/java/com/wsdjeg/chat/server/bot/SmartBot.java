@@ -35,8 +35,6 @@ public class SmartBot implements Bot {
         help.add("   /register USERNAME PASSWORD");
         help.add("   /learn pattern message");
         help.add("   /rename BOTNAME");
-
-
         return help.toArray(new String[help.size()]);
     }
 
@@ -67,7 +65,7 @@ public class SmartBot implements Bot {
             setName(cmds[1]);
             return "SmartBot's name change to " + name;
         }
-        return msgDict.get(string);
+        return msgDict.get(string) + " --- from SmartBot: " + name;
     }
 
     public Map<String,String> getMsgDict() {
