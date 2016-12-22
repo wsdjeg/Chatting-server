@@ -64,7 +64,7 @@ public class Message {
         m.put("time", getTime());
         m.put("type", "user_message");
         m.put("sendder", sendder.getUserName());
-        m.put("reciver", receiver.getUserName());
+        m.put("receiver", receiver.getUserName());
         m.put("context", msg);
         return JsonBuilder.decode(m);
     }
