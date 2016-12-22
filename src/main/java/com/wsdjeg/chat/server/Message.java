@@ -58,4 +58,14 @@ public class Message {
         DateFormat df = new SimpleDateFormat("HH:mm:ss");
         return df.format(ts);
     }
+
+    public static String userMessage(User sendder, User receiver, String msg){
+        Map<String,String> m = new HashMap<>();
+        m.put("time", getTime());
+        m.put("type", "user_message");
+        m.put("sendder", sendder.getUserName());
+        m.put("reciver", receiver.getUserName());
+        m.put("context", msg);
+        return JsonBuilder.decode(m);
+    }
 }

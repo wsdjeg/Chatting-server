@@ -113,7 +113,8 @@ public class ServerThread extends Thread{
                             User u = UserManager.getUser(cli[1]);
                             if (u != null) {
                                 if (current_user.isFriend(u) || current_user.hasSameGroup(u)) {
-                                    u.send(current_user, cli[2]);
+                                    u.send(Message.userMessage(current_user, u, cli[2]));
+                                    current_user.send(Message.userMessage(current_user, u, cli[2]));
                                 }else{
                                     send(Message.format("you and "
                                                 + cli[1]
@@ -182,7 +183,8 @@ public class ServerThread extends Thread{
                     }else if(isChatWithBot){
                         send(Message.format(bot.reply(line)));
                     }else if (query_user != null) {
-                        query_user.send(current_user, line);
+                        query_user.send(Message.userMessage(current_user, query_user, line));
+                        current_user.send(Message.userMessage(current_user, query_user, line));
                     }
                 }else{
                     send(Message.format("please login!"));
