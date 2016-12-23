@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.wsdjeg.chat.Server;
 
@@ -25,6 +26,7 @@ public class Command {
         cmds.put("/list"         , "   /list : list all the channels in the server.");
         cmds.put("/connect"      , "   /connect : connect to a bot.");
         cmds.put("/disconnect"   , "   /disconnect : disconnect with a bot.");
+        cmds.put("/debug"        , "   /dubug LEVEL: get the server log message by debug level, only for root.");
     }
     private Command(){
 
@@ -111,5 +113,9 @@ public class Command {
         }
         String[] result = new String[gs.size()];
         return gs.toArray(result);
+    }
+
+    public static Set<String> getCommands(){
+        return cmds.keySet();
     }
 }

@@ -26,6 +26,8 @@ public class ServerThread extends Thread{
         client_ip = s.getInetAddress().getHostAddress();
         bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
         printWriter = new PrintWriter(client.getOutputStream(),true);
+        send(Message.onGetConnection());
+        send(Message.format("Welcome to Chatting, please login, /help for more info!"));
         Logger.info("Client(" + client_ip + ") come in...");
         start();
     }

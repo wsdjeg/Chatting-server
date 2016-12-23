@@ -18,4 +18,8 @@ public class MessageTest {
     public void testFormat() {
         System.out.println(Message.format("你好我,neo\\\""));
     }
+
+    public void testOnGetConnection(){
+        System.out.println(Message.onGetConnection());
+    }
 }

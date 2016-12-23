@@ -87,4 +87,12 @@ public class Message {
         m.put("group_name", g.getName());
         return JsonBuilder.decode(m);
     }
+
+    public static String onGetConnection(){
+        Map<String,String> m = new HashMap<>();
+        m.put("time", getTime());
+        m.put("type", "onGetConnection");
+        m.put("commands", String.join(",", Command.getCommands()));
+        return JsonBuilder.decode(m);
+    }
 }
