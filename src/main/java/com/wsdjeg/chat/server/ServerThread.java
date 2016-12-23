@@ -149,7 +149,12 @@ public class ServerThread extends Thread{
                     }else if(line.indexOf("/addfriend ") == 0&& logined){
                         User u = UserManager.getUser(line.split(Command.SPLIT)[1]);
                         if (u != null) {
-                            current_user.addFriend(u);
+                            if (!current_user.isFriend(u)) {
+                                current_user.addFriend(u);
+                                current_user.send(Message.format("Just add " + u.getUserName() + " as your friend!"));
+                            }else{
+                                current_user.send(Message.format("You have already added " + u.getUserName() + " as your friend!"));
+                            }
                         }
                     }else if(line.indexOf("/removefriend ") == 0 && logined){
                         User u = UserManager.getUser(line.split(Command.SPLIT)[1]);

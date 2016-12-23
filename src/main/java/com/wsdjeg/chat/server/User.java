@@ -37,7 +37,7 @@ public class User {
         for (int id : groupIds) {
             GroupManager.getGroup(id)
                 .removeMember(this)
-                .send(getUserName() + " has left!");
+                .send(Message.onLeft(this, GroupManager.getGroup(id)));
         }
     }
 

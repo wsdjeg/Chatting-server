@@ -68,4 +68,14 @@ public class Message {
         m.put("context", msg);
         return JsonBuilder.decode(m);
     }
+
+    public static String onLeft(User u, Group g){
+
+        Map<String,String> m = new HashMap<>();
+        m.put("time", getTime());
+        m.put("type", "onLeft");
+        m.put("user", u.getUserName());
+        m.put("group_name", g.getName());
+        return JsonBuilder.decode(m);
+    }
 }
