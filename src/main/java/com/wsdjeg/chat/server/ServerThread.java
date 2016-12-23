@@ -184,7 +184,10 @@ public class ServerThread extends Thread{
                     if (current_channel != null
                             && !current_channel.isEmpty()
                             && !isChatWithBot) {
-                        GroupManager.getGroup(current_channel).send(current_user, line);
+                        GroupManager.getGroup(current_channel)
+                            .send(Message.groupMessage(current_user,
+                                        GroupManager.getGroup(current_channel),
+                                        line));
                     }else if(isChatWithBot){
                         send(Message.format(bot.reply(line)));
                     }else if (query_user != null) {

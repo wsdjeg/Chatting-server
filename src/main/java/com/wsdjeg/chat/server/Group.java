@@ -48,7 +48,7 @@ public  class Group {
 
     public void send(String msg){
         for (User m : members) {
-            m.send(Message.format(msg));
+            m.send(msg);
         }
     }
 

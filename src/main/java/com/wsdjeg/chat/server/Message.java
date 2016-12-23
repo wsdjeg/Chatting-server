@@ -59,6 +59,15 @@ public class Message {
         return df.format(ts);
     }
 
+    public static String groupMessage(User sendder, Group group, String msg){
+        Map<String,String> m = new HashMap<>();
+        m.put("time", getTime());
+        m.put("type", "group_message");
+        m.put("sendder", sendder.getUserName());
+        m.put("group_name", group.getName());
+        m.put("context", msg);
+        return JsonBuilder.decode(m);
+    }
     public static String userMessage(User sendder, User receiver, String msg){
         Map<String,String> m = new HashMap<>();
         m.put("time", getTime());
