@@ -23,7 +23,9 @@ public class User {
     public void join(String gName){
         int id = GroupManager.getGroupId(gName);
         if (id != 0) {
-            groupIds.add(id);
+            if (!groupIds.contains(id)) {
+                groupIds.add(id);
+            }
             GroupManager.getGroup(gName).addMember(this);
         }else{
             // no such group, create a new one.
@@ -75,7 +77,7 @@ public class User {
     }
 
     public void send(String msg){
-            client.send(msg);
+        client.send(msg);
     }
 
     /**
